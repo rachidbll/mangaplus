@@ -29,7 +29,7 @@ export const Hero: React.FC<HeroProps> = ({ mangaInfo, mangaStats, onReadNow }) 
             <div className="space-y-4">
               <div className="flex items-center space-x-2">
                 <span className="px-3 py-1 bg-blue-600 text-white text-sm rounded-full">
-                  {mangaInfo.status.charAt(0).toUpperCase() + mangaInfo.status.slice(1)}
+                  {mangaInfo.status ? mangaInfo.status.charAt(0).toUpperCase() + mangaInfo.status.slice(1) : ''}
                 </span>
                 <div className="flex items-center space-x-1">
                   <Star className="h-4 w-4 text-yellow-400 fill-current" />
@@ -46,7 +46,7 @@ export const Hero: React.FC<HeroProps> = ({ mangaInfo, mangaStats, onReadNow }) 
               </p>
               
               <div className="flex flex-wrap gap-2">
-                {mangaInfo.genres.map((genre) => (
+                {mangaInfo.genres && mangaInfo.genres.map((genre) => (
                   <span
                     key={genre}
                     className="px-3 py-1 bg-slate-700 dark:bg-slate-800 text-slate-200 dark:text-slate-300 rounded-full text-sm"
@@ -112,11 +112,11 @@ export const Hero: React.FC<HeroProps> = ({ mangaInfo, mangaStats, onReadNow }) 
             <div className="flex items-center space-x-4 text-slate-400 dark:text-slate-500">
               <div className="flex items-center space-x-2">
                 <Calendar className="h-4 w-4" />
-                <span>By {mangaInfo.author}</span>
+                <span>By {mangaInfo.author || 'Unknown'}</span>
               </div>
               <div className="flex items-center space-x-2">
                 <span>•</span>
-                <span>Updated {new Date(mangaInfo.lastUpdated).toLocaleDateString()}</span>
+                <span>Updated {mangaInfo.lastUpdated ? new Date(mangaInfo.lastUpdated).toLocaleDateString() : 'Unknown'}</span>
               </div>
             </div>
           </div>
@@ -125,8 +125,8 @@ export const Hero: React.FC<HeroProps> = ({ mangaInfo, mangaStats, onReadNow }) 
           <div className="relative">
             <div className="relative z-10">
               <img
-                src={mangaInfo.coverImage}
-                alt={mangaInfo.title}
+                src={mangaInfo.coverImage || ''}
+                alt={mangaInfo.title || ''}
                 className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
               />
             </div>

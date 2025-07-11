@@ -1,1 +1,1 @@
-Update Vite preview host
+Fix TypeError and PWA icon issues

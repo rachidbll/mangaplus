@@ -44,17 +44,17 @@ export const Footer: React.FC<FooterProps> = ({ mangaInfo, latestChapters, onCha
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-white dark:text-slate-100">Synopsis</h3>
             <p className="text-slate-300 dark:text-slate-400 text-sm leading-relaxed">
-              {mangaInfo.synopsis.slice(0, 200)}...
+              {mangaInfo.synopsis ? mangaInfo.synopsis.slice(0, 200) : ''}...
             </p>
             <div className="space-y-2">
               <div className="text-sm text-slate-400 dark:text-slate-500">
-                <span className="font-medium">Author:</span> {mangaInfo.author}
+                <span className="font-medium">Author:</span> {mangaInfo.author || 'Unknown'}
               </div>
               <div className="text-sm text-slate-400">
-                <span className="font-medium">Status:</span> {mangaInfo.status}
+                <span className="font-medium">Status:</span> {mangaInfo.status || 'Unknown'}
               </div>
               <div className="text-sm text-slate-400 dark:text-slate-500">
-                <span className="font-medium">Genres:</span> {mangaInfo.genres.join(', ')}
+                <span className="font-medium">Genres:</span> {mangaInfo.genres ? mangaInfo.genres.join(', ') : 'Unknown'}
               </div>
             </div>
           </div>
@@ -127,11 +127,11 @@ export const Footer: React.FC<FooterProps> = ({ mangaInfo, latestChapters, onCha
               © {currentYear} Akira Chronicles. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm text-slate-400">
-              <span>Total Views: {mangaInfo.totalViews.toLocaleString()}</span>
+              <span>Total Views: {mangaInfo.totalViews ? mangaInfo.totalViews.toLocaleString() : 'N/A'}</span>
               <span>•</span>
-              <span>Total Chapters: {mangaInfo.totalChapters}</span>
+              <span>Total Chapters: {mangaInfo.totalChapters || 'N/A'}</span>
               <span>•</span>
-              <span>Rating: {mangaInfo.rating}/5</span>
+              <span>Rating: {mangaInfo.rating ? `${mangaInfo.rating}/5` : 'N/A'}</span>
             </div>
           </div>
         </div>

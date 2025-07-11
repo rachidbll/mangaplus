@@ -8,7 +8,7 @@ interface BannerProps {
   onReadNow: () => void;
 }
 
-export const Banner: React.FC<BannerProps> = ({ title, description, backgroundImage, onReadNow }) => {
+export const Banner: React.FC<BannerProps> = ({ title = '', description = '', backgroundImage = '', onReadNow }) => {
   return (
     <div className="relative h-96 overflow-hidden dark:border-b dark:border-slate-800">
       <div className="absolute inset-0">
