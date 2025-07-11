@@ -26,7 +26,7 @@ function App() {
       const response = await axios.get('/api/manga/all');
       const mangaData = response.data[0]; // Assuming one manga for now
       setMangaInfo(mangaData);
-      setChapters(mangaData.chapters);
+      setChapters(mangaData.chapters || []);
       setMangaStats({
         totalViews: mangaData.totalViews,
         totalChapters: mangaData.totalChapters,
@@ -67,7 +67,7 @@ function App() {
   };
 
   const currentChapter = currentChapterId ? chapters.find(c => c.id === currentChapterId) : null;
-  const latestChapters = chapters.slice(-5).reverse();
+  const latestChapters = chapters ? chapters.slice(-5).reverse() : [];
 
   // SEO optimization based on current state
   const getSEOProps = () => {
