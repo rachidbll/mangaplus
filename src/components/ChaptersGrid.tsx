@@ -17,7 +17,7 @@ export const ChaptersGrid: React.FC<ChaptersGridProps> = ({ chapters, onChapterC
   const [showFilters, setShowFilters] = useState(false);
 
   const filteredAndSortedChapters = useMemo(() => {
-    let filtered = chapters.filter(chapter => 
+    const filtered = chapters.filter(chapter => 
       chapter.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       chapter.chapterNumber.toString().includes(searchTerm)
     );

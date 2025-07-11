@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Trash2, Edit, Download, Eye, RefreshCw, Calendar, CheckCircle, XCircle, Play, Pause, RotateCcw, Search, Grid } from 'lucide-react';
+import { Trash2, Download, RefreshCw, CheckCircle, XCircle, Play, Pause, Search, Grid } from 'lucide-react';
 import { AdminManga, SearchResult } from '../../types/admin';
 import { ScrapingService } from '../../services/scrapingService';
 import axios from 'axios';
@@ -12,7 +12,7 @@ export const MangaManager: React.FC = () => {
   const [selectedChapters, setSelectedChapters] = useState<string[]>([]);
   const [availableChapters, setAvailableChapters] = useState<string[]>([]);
   const [testingConnection, setTestingConnection] = useState(false);
-  const [connectionResult, setConnectionResult] = useState<any>(null);
+  const [connectionResult, setConnectionResult] = useState<{ success: boolean; chaptersFound: number; sampleChapters: string[]; error?: string; apiUrl?: string; corsIssue?: boolean; } | null>(null);
   const [searching, setSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [selectedSearchResult, setSelectedSearchResult] = useState<SearchResult | null>(null);
@@ -130,20 +130,20 @@ export const MangaManager: React.FC = () => {
         synopsis: manga.description,
         coverImage: manga.coverImage,
         bannerImage: manga.bannerImage,
-        totalChapters: manga.chapters.length,
+        totalChapters: manga.chapters ? manga.chapters.length : 0,
         totalViews: 0,
         rating: manga.rating,
         lastUpdated: manga.updatedAt.split('T')[0]
       },
-      chapters: manga.chapters.map((chapter, index) => ({
+      chapters: manga.chapters ? manga.chapters.map((chapter, index) => ({
         id: index + 1,
         title: chapter.title,
         chapterNumber: chapter.chapterNumber,
         releaseDate: new Date().toISOString().split('T')[0],
         pages: chapter.pages,
         views: Math.floor(Math.random() * 10000) + 1000,
-        isNew: index >= manga.chapters.length - 3
-      }))
+        isNew: manga.chapters && index >= manga.chapters.length - 3
+      })) : []
     };
 
     const dataStr = JSON.stringify(appData, null, 2);
@@ -570,7 +570,7 @@ export const MangaManager: React.FC = () => {
                   </div>
 
                   {/* Chapters List */}
-                  {selectedManga.chapters.length > 0 && (
+                  {selectedManga.chapters && selectedManga.chapters.length > 0 && (
                     <div>
                       <h4 className="font-semibold text-slate-900 dark:text-white mb-4">
                         Scraped Chapters ({selectedManga.chapters.length})

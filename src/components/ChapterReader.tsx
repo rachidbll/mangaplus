@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { ChevronLeft, ChevronRight, Home, List, Settings, Share2, BookOpen, Eye } from 'lucide-react';
 import { Chapter } from '../types/manga';
 
@@ -26,38 +26,21 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({
   const previousChapter = currentChapterIndex > 0 ? allChapters[currentChapterIndex - 1] : null;
   const nextChapter = currentChapterIndex < allChapters.length - 1 ? allChapters[currentChapterIndex + 1] : null;
 
-  const nextPage = () => {
+  const nextPage = useCallback(() => {
     if (currentPageIndex < chapter.pages.length - 1) {
       setCurrentPageIndex(currentPageIndex + 1);
     } else if (nextChapter) {
       onNavigateChapter(nextChapter.id);
     }
-  };
+  }, [currentPageIndex, chapter.pages.length, nextChapter, onNavigateChapter]);
 
-  const previousPage = () => {
+  const previousPage = useCallback(() => {
     if (currentPageIndex > 0) {
       setCurrentPageIndex(currentPageIndex - 1);
     } else if (previousChapter) {
       onNavigateChapter(previousChapter.id);
     }
-  };
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    switch (e.key) {
-      case 'ArrowLeft':
-        previousPage();
-        break;
-      case 'ArrowRight':
-        nextPage();
-        break;
-      case 'Escape':
-        setIsFullscreen(false);
-        break;
-      case 'f':
-        setIsFullscreen(!isFullscreen);
-        break;
-    }
-  };
+  }, [currentPageIndex, previousChapter, onNavigateChapter]);
 
   const handleShare = async () => {
     if (navigator.share) {
@@ -76,9 +59,26 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({
   };
 
   useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case 'ArrowLeft':
+          previousPage();
+          break;
+        case 'ArrowRight':
+          nextPage();
+          break;
+        case 'Escape':
+          setIsFullscreen(false);
+          break;
+        case 'f':
+          setIsFullscreen(!isFullscreen);
+          break;
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPageIndex, chapter.pages.length]);
+  }, [previousPage, nextPage, isFullscreen]);
 
   useEffect(() => {
     let timeout: NodeJS.Timeout;

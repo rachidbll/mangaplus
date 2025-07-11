@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Save, TestTube, Globe, Key, Link, Tag, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
 import { ScrapingService } from '../../services/scrapingService';
 import { ApiSettings as ApiSettingsType } from '../../types/admin';
@@ -12,19 +12,19 @@ export const ApiSettings: React.FC = () => {
   });
   const [saving, setSaving] = useState(false);
   const [testing, setTesting] = useState(false);
-  const [testResult, setTestResult] = useState<any>(null);
+  const [testResult, setTestResult] = useState<{ success: boolean; chaptersFound: number; sampleChapters: string[]; error?: string; apiUrl?: string; corsIssue?: boolean; } | null>(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  const scrapingService = new ScrapingService();
+  const scrapingService = useMemo(() => new ScrapingService(), []);
+
+  const loadSettings = useCallback(() => {
+    const stored = scrapingService.getStoredApiSettings();
+    setSettings(stored);
+  }, [scrapingService]);
 
   useEffect(() => {
     loadSettings();
-  }, []);
-
-  const loadSettings = () => {
-    const stored = scrapingService.getStoredApiSettings();
-    setSettings(stored);
-  };
+  }, [loadSettings]);
 
   const handleSettingChange = (field: keyof ApiSettingsType, value: string) => {
     setSettings(prev => ({ ...prev, [field]: value }));
@@ -35,7 +35,7 @@ export const ApiSettings: React.FC = () => {
     try {
       scrapingService.saveApiSettings(settings);
       alert('API settings saved successfully!');
-    } catch (error) {
+    } catch {
       alert('Failed to save settings');
     } finally {
       setSaving(false);
@@ -57,7 +57,7 @@ export const ApiSettings: React.FC = () => {
     try {
       const result = await scrapingService.testApiConnection('test manga');
       setTestResult(result);
-    } catch (error) {
+    } catch {
       setTestResult({
         success: false,
         chaptersFound: 0,
@@ -233,11 +233,11 @@ export const ApiSettings: React.FC = () => {
                 <pre>{`[
   {
     "ch": "Chapter 1",
-    "page": "[\\"image_url_1\\"]"
+    "page": "["image_url_1"]"
   },
   {
     "ch": "Chapter 1", 
-    "page": "[\\"image_url_2\\"]"
+    "page": "["image_url_2"]"
   }
 ]`}</pre>
               </div>

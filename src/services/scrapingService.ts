@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { ScrapingConfig, ScrapedChapter, ApiSettings } from '../types/admin';
+import { ScrapedChapter, ApiSettings, SearchResult } from '../types/admin';
 
 interface ApiResponse {
   ch: string;
@@ -50,14 +50,14 @@ export class ScrapingService {
 
       const data = await response.json();
       return data;
-    } catch (error) {
-      console.error('API request failed:', error);
+    } catch (e: unknown) {
+      console.error('API request failed:', e);
       
       // Provide more specific error messages
-      if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+      if (e instanceof TypeError && e.message.includes('Failed to fetch')) {
         throw new Error('Network error: Unable to connect to API. This might be due to CORS restrictions or the server being unavailable.');
-      } else if (error instanceof Error) {
-        throw new Error(`API request failed: ${error.message}`);
+      } else if (e instanceof Error) {
+        throw new Error(`API request failed: ${e.message}`);
       } else {
         throw new Error('Unknown error occurred while fetching from API');
       }
@@ -90,19 +90,19 @@ export class ScrapingService {
       }
 
       return response.data;
-    } catch (error) {
-      console.error('API request failed:', error);
+    } catch (e: unknown) {
+      console.error('API request failed:', e);
       
-      if (axios.isAxiosError(error)) {
-        if (error.code === 'ERR_NETWORK') {
+      if (axios.isAxiosError(e)) {
+        if (e.code === 'ERR_NETWORK') {
           throw new Error('Network error: Unable to connect to API. This might be due to CORS restrictions.');
-        } else if (error.response) {
-          throw new Error(`HTTP ${error.response.status}: ${error.response.statusText}`);
+        } else if (e.response) {
+          throw new Error(`HTTP ${e.response.status}: ${e.response.statusText}`);
         } else {
-          throw new Error(`Request failed: ${error.message}`);
+          throw new Error(`Request failed: ${e.message}`);
         }
       } else {
-        throw new Error(`Failed to fetch chapters from API: ${error}`);
+        throw new Error(`Failed to fetch chapters from API: ${e}`);
       }
     }
   }
@@ -140,14 +140,12 @@ export class ScrapingService {
 
   async scrapeChaptersFromApi(mangaName: string, selectedChapters?: string[]): Promise<ScrapedChapter[]> {
     let apiData: ApiResponse[];
-    let usedProxy = false;
     
     try {
       apiData = await this.fetchChaptersFromApi(mangaName, false); // search=false for scraping
-    } catch (error) {
+    } catch (e: unknown) {
       // If direct method fails for any reason, try proxy method
       console.log('Direct API call failed, trying proxy method...');
-      usedProxy = true;
       apiData = await this.fetchChaptersFromApiWithProxy(mangaName, false); // search=false for scraping
     }
     
@@ -179,7 +177,7 @@ export class ScrapingService {
       
       try {
         apiData = await this.fetchChaptersFromApi(mangaName, true); // search=true for testing
-      } catch (error) {
+      } catch (e: unknown) {
         // If direct method fails for any reason, try proxy method
         console.log('Direct API call failed, trying proxy method...');
         usedProxy = true;
@@ -195,7 +193,7 @@ export class ScrapingService {
         apiUrl: settings.url,
         corsIssue: usedProxy
       };
-    } catch (error) {
+    } catch (e: unknown) {
       // If both methods fail, it's likely a CORS or connectivity issue
       const corsIssue = true;
       
@@ -203,7 +201,7 @@ export class ScrapingService {
         success: false,
         chaptersFound: 0,
         sampleChapters: [],
-        error: error instanceof Error ? error.message : 'Unknown error',
+        error: e instanceof Error ? e.message : 'Unknown error',
         apiUrl: settings.url,
         corsIssue
       };
@@ -234,22 +232,22 @@ export class ScrapingService {
       }
       
       return [];
-    } catch (error) {
-      console.error('Search failed:', error);
+    } catch (e: unknown) {
+      console.error('Search failed:', e);
       return [];
     }
   }
 
   // Legacy methods for backward compatibility
-  async scrapeChapterList(config: ScrapingConfig): Promise<Array<{ title: string; url: string; chapterNumber: number }>> {
+  async scrapeChapterList(): Promise<Array<{ title: string; url: string; chapterNumber: number }>> {
     throw new Error('Legacy scraping method deprecated. Use API-based scraping instead.');
   }
 
-  async scrapeFullChapter(chapterUrl: string, config: ScrapingConfig): Promise<string[]> {
+  async scrapeFullChapter(): Promise<string[]> {
     throw new Error('Legacy scraping method deprecated. Use API-based scraping instead.');
   }
 
-  async validateConfig(config: ScrapingConfig): Promise<{
+  async validateConfig(): Promise<{
     isValid: boolean;
     errors: string[];
     samples: {

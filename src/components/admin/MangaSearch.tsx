@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, ExternalLink, Star, Calendar, BookOpen, User, Palette, Download } from 'lucide-react';
+import { Search, ExternalLink, Star, BookOpen, User, Download } from 'lucide-react';
 import { AniListService } from '../../services/anilistApi';
 import { AniListManga } from '../../types/admin';
 import axios from 'axios';

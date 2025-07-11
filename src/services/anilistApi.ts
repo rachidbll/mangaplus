@@ -88,7 +88,7 @@ const SEARCH_MANGA_QUERY = `
 `;
 
 export class AniListService {
-  private async makeRequest(query: string, variables: any): Promise<any> {
+  private async makeRequest(query: string, variables: Record<string, unknown>): Promise<Record<string, unknown>> {
     try {
       const response = await axios.post(ANILIST_API_URL, {
         query,

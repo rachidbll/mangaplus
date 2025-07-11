@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Clock, Eye, ChevronRight, Calendar, Filter, Search } from 'lucide-react';
+import { Eye, ChevronRight, Calendar, Filter, Search } from 'lucide-react';
 import { Chapter } from '../types/manga';
 
 interface ChaptersListProps {

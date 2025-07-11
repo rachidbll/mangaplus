@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,22 +8,22 @@ datasource db {
 }
 
 model Manga {
-  id              String    @id @default(cuid())
-  anilistId       Int?      @unique
-  title           String
-  description     String    @db.Text
-  coverImage      String
-  bannerImage     String
-  genres          String
-  status          String
-  author          String
-  artist          String
-  totalChapters   Int
-  rating          Float
-  apiMangaName    String
-  chapters        Chapter[]
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
+  id            String    @id @default(cuid())
+  anilistId     Int?      @unique
+  title         String
+  description   String    @db.Text
+  coverImage    String
+  bannerImage   String
+  genres        String
+  status        String
+  author        String
+  artist        String
+  totalChapters Int
+  rating        Float
+  apiMangaName  String
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  chapters      Chapter[]
 }
 
 model Chapter {
@@ -35,7 +32,9 @@ model Chapter {
   chapterNumber Int
   pages         Json
   mangaId       String
-  manga         Manga    @relation(fields: [mangaId], references: [id])
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+  manga         Manga    @relation(fields: [mangaId], references: [id])
+
+  @@index([mangaId], map: "Chapter_mangaId_fkey")
 }

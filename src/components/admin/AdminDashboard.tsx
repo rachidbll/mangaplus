@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, Database, Search, Plus, BookOpen, Globe, Code } from 'lucide-react';
+import { Settings, Database, Search, BookOpen, Globe } from 'lucide-react';
 import { MangaSearch } from './MangaSearch';
 import { ApiSettings } from './ApiSettings';
 import { MangaManager } from './MangaManager';
