@@ -23,6 +23,21 @@ function App() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get('/api/manga/all');
+      const mangaData = response.data[0]; // Assuming one manga for now
+      setMangaInfo(mangaData);
+      setChapters(mangaData.chapters || []);
+      setMangaStats({
+        totalViews: mangaData.totalViews,
+        totalChapters: mangaData.totalChapters,
+        rating: mangaData.rating,
+        followers: 0, // Add this to your model if needed
+        monthlyViews: 0, // Add this to your model if needed
+      });
+    };
+    fetchData();
+
     const siteTitle = localStorage.getItem('siteTitle');
     const siteDescription = localStorage.getItem('siteDescription');
     if (siteTitle) {

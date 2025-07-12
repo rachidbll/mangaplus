@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Home, Users, BookOpen, Heart, Search, Sun, Moon, Settings } from 'lucide-react';
-import { useTheme } from '../contexts/ThemeContext';
+import { useTheme } from '../hooks/useTheme';
 
 interface NavigationProps {
   currentPage: string;
