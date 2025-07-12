@@ -8,4 +8,15 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  server: {
+    host: true,
+  },
+  preview: {
+    host: true,
+    port: 4173,
+    strictPort: true,
+    allowedHosts: [
+      'mangaplus.cap.gakuenbabysitters.online',
+    ],
+  },
 });
