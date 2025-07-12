@@ -24,6 +24,7 @@ model Manga {
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   chapters      Chapter[]
+  characters    Character[]
 }
 
 model Chapter {
@@ -37,4 +38,15 @@ model Chapter {
   manga         Manga    @relation(fields: [mangaId], references: [id])
 
   @@index([mangaId], map: "Chapter_mangaId_fkey")
+}
+
+model Character {
+  id          String  @id @default(cuid())
+  name        String
+  image       String
+  description String  @db.Text
+  mangaId     String
+  manga       Manga   @relation(fields: [mangaId], references: [id])
+
+  @@index([mangaId], map: "Character_mangaId_fkey")
 }

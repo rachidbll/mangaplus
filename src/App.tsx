@@ -20,22 +20,20 @@ function App() {
   const [mangaInfo, setMangaInfo] = useState<MangaInfo | null>(null);
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [mangaStats, setMangaStats] = useState<MangaStats | null>(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const response = await axios.get('/api/manga/all');
-      const mangaData = response.data[0]; // Assuming one manga for now
-      setMangaInfo(mangaData);
-      setChapters(mangaData.chapters || []);
-      setMangaStats({
-        totalViews: mangaData.totalViews,
-        totalChapters: mangaData.totalChapters,
-        rating: mangaData.rating,
-        followers: 0, // Add this to your model if needed
-        monthlyViews: 0, // Add this to your model if needed
-      });
-    };
-    fetchData();
+    const siteTitle = localStorage.getItem('siteTitle');
+    const siteDescription = localStorage.getItem('siteDescription');
+    if (siteTitle) {
+      document.title = siteTitle;
+    }
+    if (siteDescription) {
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', siteDescription);
+      }
+    }
   }, []);
 
   // PWA registration
@@ -52,7 +50,12 @@ function App() {
   }, []);
 
   const handleNavigate = (page: string) => {
-    setCurrentState(page as AppState);
+    if (page === 'admin') {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+      setCurrentState(page as AppState);
+    }
     setCurrentChapterId(null);
   };
 
@@ -97,7 +100,7 @@ function App() {
     return {};
   };
 
-  const renderContent = () => {
+  const renderUserContent = () => {
     if (!mangaInfo || !mangaStats) {
       return <div>Loading...</div>;
     }
@@ -136,8 +139,14 @@ function App() {
           <div className="min-h-screen bg-slate-50 py-12">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold text-slate-900 mb-8">Characters</h1>
-              <div className="bg-white rounded-lg shadow-md p-8 text-center">
-                <p className="text-slate-600">Character profiles coming soon...</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+                {mangaInfo?.characters?.map((character) => (
+                  <div key={character.id} className="bg-white rounded-lg shadow-md p-4 text-center">
+                    <img src={character.image} alt={character.name} className="w-32 h-32 rounded-full mx-auto mb-4" />
+                    <h3 className="text-lg font-semibold text-slate-900">{character.name}</h3>
+                    <p className="text-slate-600 text-sm">{character.description}</p>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
@@ -155,16 +164,13 @@ function App() {
           </div>
         );
 
-      case 'admin':
-        return <AdminDashboard />;
-
       default:
         return (
           <>
             <Banner
               title={mangaInfo.title}
               description={mangaInfo.synopsis}
-              backgroundImage={mangaInfo.bannerImage}
+              backgroundImage="https://picsum.photos/1200/400"
               onReadNow={handleReadNow}
             />
             <Hero
@@ -191,14 +197,12 @@ function App() {
       <div className="min-h-screen bg-white dark:bg-slate-900 transition-colors">
         <SEO {...getSEOProps()} />
         
-        {currentState !== 'reader' && (
-          <Navigation
-            currentPage={currentState}
-            onNavigate={handleNavigate}
-          />
-        )}
+        <Navigation
+          currentPage={currentState}
+          onNavigate={handleNavigate}
+        />
         
-        {renderContent()}
+        {isAdmin ? <AdminDashboard /> : renderUserContent()}
       </div>
     </ThemeProvider>
   );

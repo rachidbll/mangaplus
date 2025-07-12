@@ -155,7 +155,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({
         {readingMode === 'single' ? (
           <div className="relative max-w-4xl w-full">
             <img
-              src={chapter.pages[currentPageIndex]}
+              src="https://picsum.photos/800/1200"
               alt={`Page ${currentPageIndex + 1}`}
               className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
               onClick={() => setShowControls(!showControls)}

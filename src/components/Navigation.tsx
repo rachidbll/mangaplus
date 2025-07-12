@@ -10,6 +10,14 @@ interface NavigationProps {
 export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
+  const [siteLogo, setSiteLogo] = useState('');
+
+  useEffect(() => {
+    const logo = localStorage.getItem('siteLogo');
+    if (logo) {
+      setSiteLogo(logo);
+    }
+  }, []);
 
   const navItems = [
     { id: 'home', label: 'Home', icon: Home },
@@ -29,7 +37,11 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate 
                 onClick={() => onNavigate('home')}
                 className="flex items-center space-x-2 text-white hover:text-blue-400 dark:hover:text-blue-300 transition-colors"
               >
-                <BookOpen className="h-8 w-8" />
+                {siteLogo ? (
+                  <img src={siteLogo} alt="Site Logo" className="h-8 w-8" />
+                ) : (
+                  <BookOpen className="h-8 w-8" />
+                )}
                 <span className="text-xl font-bold">Akira Chronicles</span>
               </button>
             </div>

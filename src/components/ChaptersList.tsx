@@ -87,7 +87,7 @@ export const ChaptersList: React.FC<ChaptersListProps> = ({ chapters, onChapterC
             >
               <div className="relative">
                 <img
-                  src={chapter.pages[0]}
+                  src="https://picsum.photos/400/200"
                   alt={chapter.title}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />

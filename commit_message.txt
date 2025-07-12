@@ -1,1 +1,1 @@
-Fix TypeError and PWA icon issues
+Fix TypeErrors in UI components

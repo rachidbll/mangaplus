@@ -25,6 +25,18 @@ export interface AniListManga {
       primaryOccupations: string[];
     }>;
   };
+  characters: {
+    nodes: Array<{
+      id: number;
+      name: {
+        full: string;
+      };
+      image: {
+        large: string;
+      };
+      description: string;
+    }>;
+  };
   startDate: {
     year: number;
     month: number;

@@ -11,7 +11,7 @@ interface SEOProps {
 export const SEO: React.FC<SEOProps> = ({
   title = "Akira Chronicles - Read Manga Online",
   description = "Read Akira Chronicles manga online with the best reading experience. Follow the epic story of Kaneda and Tetsuo in Neo-Tokyo.",
-  image = "https://images.pexels.com/photos/6208086/pexels-photo-6208086.jpeg?auto=compress&cs=tinysrgb&w=1200",
+  image = "https://picsum.photos/1200/630",
   url = window.location.href,
   type = "website"
 }) => {

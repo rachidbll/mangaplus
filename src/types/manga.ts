@@ -8,6 +8,13 @@ export interface Chapter {
   isNew?: boolean;
 }
 
+export interface Character {
+  id: number;
+  name: string;
+  image: string;
+  description: string;
+}
+
 export interface MangaInfo {
   title: string;
   author: string;
@@ -21,6 +28,7 @@ export interface MangaInfo {
   totalViews: number;
   rating: number;
   lastUpdated: string;
+  characters?: Character[];
 }
 
 export interface MangaStats {

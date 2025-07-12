@@ -32,6 +32,18 @@ const MANGA_QUERY = `
           primaryOccupations
         }
       }
+      characters {
+        nodes {
+          id
+          name {
+            full
+          }
+          image {
+            large
+          }
+          description
+        }
+      }
       startDate {
         year
         month
@@ -153,6 +165,13 @@ export class AniListService {
                staff.primaryOccupations?.includes('Story & Art')
     )?.name?.full || author;
 
+    const characters = anilistManga.characters?.nodes?.map(character => ({
+      id: character.id,
+      name: character.name.full,
+      image: character.image.large,
+      description: character.description?.replace(/<[^>]*>/g, '') || '',
+    }));
+
     return {
       title: anilistManga.title.english || anilistManga.title.romaji,
       author,
@@ -164,7 +183,8 @@ export class AniListService {
       bannerImage: anilistManga.bannerImage || anilistManga.coverImage?.large || '',
       totalChapters: anilistManga.chapters || 0,
       rating: anilistManga.averageScore ? anilistManga.averageScore / 10 : 0,
-      lastUpdated: new Date().toISOString().split('T')[0]
+      lastUpdated: new Date().toISOString().split('T')[0],
+      characters,
     };
   }
 }

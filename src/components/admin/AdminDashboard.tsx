@@ -3,6 +3,7 @@ import { Settings, Database, Search, BookOpen, Globe } from 'lucide-react';
 import { MangaSearch } from './MangaSearch';
 import { ApiSettings } from './ApiSettings';
 import { MangaManager } from './MangaManager';
+import { Settings as SettingsComponent } from './Settings';
 
 type AdminTab = 'search' | 'api-settings' | 'manage' | 'settings';
 
@@ -25,12 +26,7 @@ export const AdminDashboard: React.FC = () => {
       case 'manage':
         return <MangaManager />;
       case 'settings':
-        return (
-          <div className="bg-white dark:bg-slate-800 rounded-lg shadow-md p-8">
-            <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-6">Settings</h2>
-            <p className="text-slate-600 dark:text-slate-400">Settings panel coming soon...</p>
-          </div>
-        );
+        return <SettingsComponent />;
       default:
         return null;
     }
@@ -56,6 +52,18 @@ export const AdminDashboard: React.FC = () => {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-8">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <Settings className="h-5 w-5 text-yellow-400" aria-hidden="true" />
+            </div>
+            <div className="ml-3">
+              <p className="text-sm text-yellow-700">
+                Welcome to the admin dashboard. Please update the site information in the settings tab.
+              </p>
+            </div>
+          </div>
+        </div>
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar */}
           <div className="lg:w-64 flex-shrink-0">

@@ -125,7 +125,7 @@ export const Hero: React.FC<HeroProps> = ({ mangaInfo, mangaStats, onReadNow }) 
           <div className="relative">
             <div className="relative z-10">
               <img
-                src={mangaInfo.coverImage || ''}
+                src="https://picsum.photos/400/600"
                 alt={mangaInfo.title || ''}
                 className="w-full max-w-md mx-auto rounded-2xl shadow-2xl"
               />
