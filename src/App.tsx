@@ -28,11 +28,11 @@ function App() {
       const response = await axios.get('/api/manga/all');
       const mangaData = response.data[0]; // Assuming one manga for now
       setMangaInfo(mangaData);
-      setChapters(mangaData.chapters.map((chapter: Chapter) => ({
+      setChapters((mangaData.chapters || []).map((chapter: Chapter) => ({
         ...chapter,
         chapterNumber: chapter.chapterNumber || 0,
         views: chapter.views || 0,
-      })) || []);
+      })));
       setMangaStats({
         totalViews: mangaData.totalViews || 0,
         totalChapters: mangaData.totalChapters || 0,
