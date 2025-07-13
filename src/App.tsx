@@ -28,11 +28,15 @@ function App() {
       const response = await axios.get('/api/manga/all');
       const mangaData = response.data[0]; // Assuming one manga for now
       setMangaInfo(mangaData);
-      setChapters(mangaData.chapters || []);
+      setChapters(mangaData.chapters.map((chapter: Chapter) => ({
+        ...chapter,
+        chapterNumber: chapter.chapterNumber || 0,
+        views: chapter.views || 0,
+      })) || []);
       setMangaStats({
-        totalViews: mangaData.totalViews,
-        totalChapters: mangaData.totalChapters,
-        rating: mangaData.rating,
+        totalViews: mangaData.totalViews || 0,
+        totalChapters: mangaData.totalChapters || 0,
+        rating: mangaData.rating || 0,
         followers: 0, // Add this to your model if needed
         monthlyViews: 0, // Add this to your model if needed
       });
