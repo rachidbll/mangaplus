@@ -237,10 +237,7 @@ export class ScrapingService {
           const chapters = $(element).find('div:contains("Chapters Published")').text();
           const status = $(element).find('div:contains("Chapters Published")').text().includes('Ongoing') ? 'Ongoing' : 'Completed';
           const type = $(element).find('strong').text();
-          const genres: string[] = [];
-          $(element).find('div:contains("Action"), div:contains("Adventure"), div:contains("Comedy"), div:contains("Drama"), div:contains("Fantasy")').text().split(', ').forEach(genre => {
-            if (genre) genres.push(genre.trim());
-          });
+          const genres = $(element).find('div:contains("Action"), div:contains("Adventure"), div:contains("Comedy"), div:contains("Drama"), div:contains("Fantasy")').text().split(', ').filter(Boolean).map(genre => genre.trim());
           const image = $(element).find('img').attr('src') || 'https://via.placeholder.com/64x80?text=No+Image'; // Placeholder if no image
 
           if (title && href) {

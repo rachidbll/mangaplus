@@ -374,7 +374,7 @@ export const MangaManager: React.FC = () => {
                                   {result.status} • {result.type}
                                 </p>
                                 <div className="flex flex-wrap gap-1">
-                                  {result.genres.slice(0, 3).map((genre, i) => (
+                                  {(result.genres || []).slice(0, 3).map((genre, i) => (
                                     <span
                                       key={i}
                                       className="text-xs bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300 px-1 py-0.5 rounded"
