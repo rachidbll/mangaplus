@@ -553,7 +553,7 @@ export const MangaManager: React.FC = () => {
                       </div>
                       <div className="text-center">
                         <div className="text-2xl font-bold text-slate-900 dark:text-white">
-                          {selectedManga.chapters.reduce((total, ch) => total + ch.pages.length, 0)}
+                          {selectedManga.chapters ? selectedManga.chapters.reduce((total, ch) => total + ch.pages.length, 0) : 0}
                         </div>
                         <div className="text-sm text-slate-500 dark:text-slate-400">Total Pages</div>
                       </div>
