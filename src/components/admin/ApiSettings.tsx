@@ -62,7 +62,7 @@ export const ApiSettings: React.FC = () => {
         success: false,
         chaptersFound: 0,
         sampleChapters: [],
-        error: `Test failed: ${error}`,
+        error: `Test failed: ${e instanceof Error ? e.message : 'Unknown error'}`,
         apiUrl: settings.url
       });
     } finally {
