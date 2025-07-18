@@ -178,7 +178,7 @@ function App() {
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <h1 className="text-3xl font-bold text-slate-900 mb-8">Characters</h1>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                {mangaInfo?.characters?.map((character) => (
+                {(mangaInfo?.characters || []).map((character) => (
                   <div key={character.id} className="bg-white rounded-lg shadow-md p-4 text-center">
                     <img src={character.image} alt={character.name} className="w-32 h-32 rounded-full mx-auto mb-4" />
                     <h3 className="text-lg font-semibold text-slate-900">{character.name}</h3>
