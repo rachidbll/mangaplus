@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export const Settings: React.FC = () => {
-  const [siteTitle, setSiteTitle] = useState('Akira Chronicles');
-  const [siteDescription, setSiteDescription] = useState('Read Akira Chronicles manga online with the best reading experience. Follow the epic story of Kaneda and Tetsuo in Neo-Tokyo.');
-  const [siteLogo, setSiteLogo] = useState('');
+  const [siteTitle, setSiteTitle] = useState(() => localStorage.getItem('siteTitle') || 'Akira Chronicles');
+  const [siteDescription, setSiteDescription] = useState(() => localStorage.getItem('siteDescription') || 'Read Akira Chronicles manga online with the best reading experience. Follow the epic story of Kaneda and Tetsuo in Neo-Tokyo.');
+  const [siteLogo, setSiteLogo] = useState(() => localStorage.getItem('siteLogo') || '');
+  const [defaultBannerImage, setDefaultBannerImage] = useState(() => localStorage.getItem('defaultBannerImage') || 'https://picsum.photos/1200/400');
+  const [defaultHeroImage, setDefaultHeroImage] = useState(() => localStorage.getItem('defaultHeroImage') || 'https://picsum.photos/400/600');
+  const [defaultChapterImage, setDefaultChapterImage] = useState(() => localStorage.getItem('defaultChapterImage') || 'https://picsum.photos/800/1200');
 
   const handleSave = () => {
-    // Save settings to local storage or an API endpoint
     localStorage.setItem('siteTitle', siteTitle);
     localStorage.setItem('siteDescription', siteDescription);
     localStorage.setItem('siteLogo', siteLogo);
+    localStorage.setItem('defaultBannerImage', defaultBannerImage);
+    localStorage.setItem('defaultHeroImage', defaultHeroImage);
+    localStorage.setItem('defaultChapterImage', defaultChapterImage);
     alert('Settings saved successfully!');
   };
 
@@ -44,6 +49,36 @@ export const Settings: React.FC = () => {
             id="siteLogo"
             value={siteLogo}
             onChange={(e) => setSiteLogo(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+          />
+        </div>
+        <div>
+          <label htmlFor="defaultBannerImage" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Default Banner Image URL</label>
+          <input
+            type="text"
+            id="defaultBannerImage"
+            value={defaultBannerImage}
+            onChange={(e) => setDefaultBannerImage(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+          />
+        </div>
+        <div>
+          <label htmlFor="defaultHeroImage" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Default Hero Image URL</label>
+          <input
+            type="text"
+            id="defaultHeroImage"
+            value={defaultHeroImage}
+            onChange={(e) => setDefaultHeroImage(e.target.value)}
+            className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
+          />
+        </div>
+        <div>
+          <label htmlFor="defaultChapterImage" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Default Chapter Image URL</label>
+          <input
+            type="text"
+            id="defaultChapterImage"
+            value={defaultChapterImage}
+            onChange={(e) => setDefaultChapterImage(e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
           />
         </div>

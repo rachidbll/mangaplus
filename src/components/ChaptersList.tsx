@@ -5,9 +5,10 @@ import { Chapter } from '../types/manga';
 interface ChaptersListProps {
   chapters: Chapter[];
   onChapterClick: (chapterId: number) => void;
+  defaultChapterImage: string;
 }
 
-export const ChaptersList: React.FC<ChaptersListProps> = ({ chapters, onChapterClick }) => {
+export const ChaptersList: React.FC<ChaptersListProps> = ({ chapters, onChapterClick, defaultChapterImage }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'newest' | 'oldest' | 'views'>('newest');
   const [showFilters, setShowFilters] = useState(false);
@@ -87,7 +88,7 @@ export const ChaptersList: React.FC<ChaptersListProps> = ({ chapters, onChapterC
             >
               <div className="relative">
                 <img
-                  src="https://picsum.photos/400/200"
+                  src={chapter.pages[0] || defaultChapterImage}
                   alt={chapter.title}
                   className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
                 />

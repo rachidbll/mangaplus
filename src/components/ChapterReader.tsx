@@ -8,6 +8,7 @@ interface ChapterReaderProps {
   onNavigateHome: () => void;
   onNavigateChapter: (chapterId: number) => void;
   onShowChaptersList: () => void;
+  defaultChapterImage: string;
 }
 
 export const ChapterReader: React.FC<ChapterReaderProps> = ({
@@ -15,7 +16,8 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({
   allChapters,
   onNavigateHome,
   onNavigateChapter,
-  onShowChaptersList
+  onShowChaptersList,
+  defaultChapterImage
 }) => {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [readingMode, setReadingMode] = useState<'single' | 'continuous'>('single');
@@ -155,7 +157,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({
         {readingMode === 'single' ? (
           <div className="relative max-w-4xl w-full">
             <img
-              src="https://picsum.photos/800/1200"
+              src={chapter.pages[currentPageIndex] || defaultChapterImage}
               alt={`Page ${currentPageIndex + 1}`}
               className="w-full h-auto max-h-[90vh] object-contain rounded-lg shadow-2xl"
               onClick={() => setShowControls(!showControls)}
@@ -178,7 +180,7 @@ export const ChapterReader: React.FC<ChapterReaderProps> = ({
             {chapter.pages.map((page, index) => (
               <img
                 key={index}
-                src={page}
+                src={page || defaultChapterImage}
                 alt={`Page ${index + 1}`}
                 className="w-full h-auto object-contain rounded-lg shadow-lg"
               />

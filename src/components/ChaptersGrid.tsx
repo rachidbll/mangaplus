@@ -5,12 +5,13 @@ import { Chapter } from '../types/manga';
 interface ChaptersGridProps {
   chapters: Chapter[];
   onChapterClick: (chapterId: number) => void;
+  defaultChapterImage: string;
 }
 
 type SortOption = 'newest' | 'oldest' | 'views' | 'chapter';
 type SortOrder = 'asc' | 'desc';
 
-export const ChaptersGrid: React.FC<ChaptersGridProps> = ({ chapters, onChapterClick }) => {
+export const ChaptersGrid: React.FC<ChaptersGridProps> = ({ chapters, onChapterClick, defaultChapterImage }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<SortOption>('newest');
   const [sortOrder, setSortOrder] = useState<SortOrder>('desc');

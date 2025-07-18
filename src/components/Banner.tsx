@@ -13,7 +13,7 @@ export const Banner: React.FC<BannerProps> = ({ title = '', description = '', ba
     <div className="relative h-96 overflow-hidden dark:border-b dark:border-slate-800">
       <div className="absolute inset-0">
         <img
-          src="https://picsum.photos/1200/400"
+          src={backgroundImage}
           alt={title}
           className="w-full h-full object-cover"
         />

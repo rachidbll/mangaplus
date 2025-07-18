@@ -22,6 +22,9 @@ function App() {
   const [chapters, setChapters] = useState<Chapter[]>([]);
   const [mangaStats, setMangaStats] = useState<MangaStats | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [defaultBannerImage, setDefaultBannerImage] = useState('https://picsum.photos/1200/400');
+  const [defaultHeroImage, setDefaultHeroImage] = useState('https://picsum.photos/400/600');
+  const [defaultChapterImage, setDefaultChapterImage] = useState('https://picsum.photos/800/1200');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -45,6 +48,10 @@ function App() {
 
     const siteTitle = localStorage.getItem('siteTitle');
     const siteDescription = localStorage.getItem('siteDescription');
+    const storedDefaultBannerImage = localStorage.getItem('defaultBannerImage');
+    const storedDefaultHeroImage = localStorage.getItem('defaultHeroImage');
+    const storedDefaultChapterImage = localStorage.getItem('defaultChapterImage');
+
     if (siteTitle) {
       document.title = siteTitle;
     }
@@ -53,6 +60,15 @@ function App() {
       if (metaDescription) {
         metaDescription.setAttribute('content', siteDescription);
       }
+    }
+    if (storedDefaultBannerImage) {
+      setDefaultBannerImage(storedDefaultBannerImage);
+    }
+    if (storedDefaultHeroImage) {
+      setDefaultHeroImage(storedDefaultHeroImage);
+    }
+    if (storedDefaultChapterImage) {
+      setDefaultChapterImage(storedDefaultChapterImage);
     }
   }, []);
 
@@ -134,6 +150,7 @@ function App() {
               onNavigateHome={() => setCurrentState('home')}
               onNavigateChapter={handleChapterClick}
               onShowChaptersList={() => setCurrentState('chapters')}
+              defaultChapterImage={defaultChapterImage}
             />
           );
         }
@@ -145,6 +162,7 @@ function App() {
             <ChaptersList
               chapters={chapters}
               onChapterClick={handleChapterClick}
+              defaultChapterImage={defaultChapterImage}
             />
             <Footer
               mangaInfo={mangaInfo}
@@ -190,17 +208,19 @@ function App() {
             <Banner
               title={mangaInfo.title}
               description={mangaInfo.synopsis}
-              backgroundImage="https://picsum.photos/1200/400"
+              backgroundImage={defaultBannerImage}
               onReadNow={handleReadNow}
             />
             <Hero
               mangaInfo={mangaInfo}
               mangaStats={mangaStats}
               onReadNow={handleReadNow}
+              defaultHeroImage={defaultHeroImage}
             />
             <ChaptersGrid
               chapters={chapters}
               onChapterClick={handleChapterClick}
+              defaultChapterImage={defaultChapterImage}
             />
             <Footer
               mangaInfo={mangaInfo}
