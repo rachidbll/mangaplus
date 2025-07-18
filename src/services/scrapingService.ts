@@ -1,4 +1,5 @@
 import axios from 'axios';
+import * as cheerio from 'cheerio';
 import { ScrapedChapter, ApiSettings, SearchResult } from '../types/admin';
 
 interface ApiResponse {
@@ -226,9 +227,48 @@ export class ScrapingService {
       const apiData = await this.fetchChaptersFromApi(mangaName, true); // search=true for searching
       
       // If we get a successful response, try to parse it as HTML
-      if (apiData && typeof apiData === 'string') {
-        // Parse HTML response here if needed
-        return [];
+      if (typeof apiData === 'string') {
+        const $ = cheerio.load(apiData);
+        const results: SearchResult[] = [];
+
+        $('.manga_search_item').each((index, element) => {
+          const title = $(element).find('h3 a').text();
+          const href = $(element).find('h3 a').attr('href');
+          const chapters = $(element).find('div:contains("Chapters Published")').text();
+          const status = $(element).find('div:contains("Chapters Published")').text().includes('Ongoing') ? 'Ongoing' : 'Completed';
+          const type = $(element).find('strong').text();
+          const genres: string[] = [];
+          $(element).find('div:contains("Action"), div:contains("Adventure"), div:contains("Comedy"), div:contains("Drama"), div:contains("Fantasy")').text().split(', ').forEach(genre => {
+            if (genre) genres.push(genre.trim());
+          });
+          const image = $(element).find('img').attr('src') || 'https://via.placeholder.com/64x80?text=No+Image'; // Placeholder if no image
+
+          if (title && href) {
+            results.push({
+              name: title.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+              title,
+              href,
+              image,
+              chapters,
+              status,
+              type,
+              genres
+            });
+          }
+        });
+        return results;
+      } else if (Array.isArray(apiData)) {
+        // If it's an array of ApiResponse, convert to SearchResult
+        return apiData.map(item => ({
+          name: item.ch.toLowerCase().replace(/[^a-z0-9]/g, '_'),
+          title: item.ch,
+          href: '', // API response doesn't provide href directly
+          image: item.page ? JSON.parse(item.page)[0] : 'https://via.placeholder.com/64x80?text=No+Image',
+          chapters: '', // API response doesn't provide chapters directly
+          status: '', // API response doesn't provide status directly
+          type: '', // API response doesn't provide type directly
+          genres: [] // API response doesn't provide genres directly
+        }));
       }
       
       return [];
