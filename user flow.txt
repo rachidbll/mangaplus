@@ -1,0 +1,260 @@
+Akira Chronicles - Manga Reader Platform
+Comprehensive User Flow Documentation
+Project Overview
+Akira Chronicles is a modern, full-featured manga reading platform built with React, TypeScript, and Tailwind CSS. It combines a beautiful reading experience with powerful administrative tools for manga management and content scraping.
+
+🎯 Main Application Features
+1. Public Reading Experience
+Landing Page & Navigation
+Hero Section: Stunning banner with manga cover, synopsis, and call-to-action buttons
+Statistics Display: Total views, chapters, rating, and followers with animated counters
+Responsive Navigation: Dark/light theme toggle, search functionality, mobile-friendly menu
+SEO Optimized: Dynamic meta tags, structured data, and social media previews
+Chapter Discovery
+Chapters Grid: Visual grid layout with cover images, chapter numbers, and metadata
+Advanced Filtering: Search by title/number, sort by date/views/chapter number
+Quick Stats: View counts, release dates, page counts for each chapter
+New Chapter Indicators: Visual badges for recently released content
+Reading Experience
+Dual Reading Modes:
+Single page mode with navigation overlays
+Continuous scroll mode for seamless reading
+Keyboard Navigation: Arrow keys for page navigation, 'F' for fullscreen
+Fullscreen Mode: Immersive reading with auto-hiding controls
+Chapter Navigation: Previous/next chapter buttons with progress indicators
+Mobile Optimized: Touch-friendly controls and responsive layouts
+Progressive Web App (PWA)
+Offline Support: Service worker for caching and offline reading
+App-like Experience: Installable on mobile devices and desktop
+Fast Loading: Optimized images and lazy loading for performance
+🔧 Administrative System
+2. Admin Dashboard Overview
+Dashboard Navigation
+Sidebar Menu: Clean navigation between different admin sections
+Quick Stats: Real-time statistics about manga, chapters, and scraping status
+Responsive Design: Works seamlessly on desktop and mobile devices
+3. Manga Search & Import (AniList Integration)
+AniList Database Search
+
+User Flow: Admin → Search Tab → Enter manga title → Search
+Features:
+
+Real-time Search: Search AniList's comprehensive manga database
+Rich Results: Cover images, ratings, genres, author information
+Detailed View: Expandable manga details with full synopsis and metadata
+One-Click Import: Import manga metadata directly into the system
+Data Imported:
+
+Title (English/Romaji/Native)
+Author and Artist information
+Cover and banner images
+Genres and tags
+Status (Ongoing/Completed)
+Chapter count and rating
+Full synopsis
+4. API Configuration System
+API Settings Management
+
+User Flow: Admin → API Settings → Configure → Test → Save
+Configuration Options:
+
+API Endpoint URL: Target scraping API endpoint
+Authentication: Username/password for Basic Auth
+Parameter Mapping: Configurable parameter names for requests
+Connection Testing: Real-time API connectivity verification
+Request Format:
+
+
+// Search Mode
+POST /api/endpoint?anime=manga_name&search=true
+Authorization: Basic base64(username:password)
+
+// Scraping Mode  
+POST /api/endpoint?anime=manga_name&search=false
+Authorization: Basic base64(username:password)
+Error Handling:
+
+CORS Detection: Automatic proxy fallback for browser restrictions
+Connection Validation: Pre-scraping API health checks
+Fallback Mechanisms: Multiple request methods for reliability
+5. Advanced Manga Management
+Manga Selection & Configuration
+
+User Flow: Admin → Manage Tab → Select Manga → Configure → Search → Scrape
+Management Features:
+
+A. Manga Configuration
+API Name Mapping: Configure how manga names are sent to the API
+Real-time Editing: Update manga metadata and scraping parameters
+Status Tracking: Monitor scraping progress and chapter counts
+B. Manga Search & Discovery
+Available Manga Search: Query the API for available manga titles
+HTML Parsing: Intelligent parsing of search results from various sources
+Visual Selection: Grid-based selection of correct manga from multiple results
+Search Result Parsing:
+
+
+<!-- Parsed from API responses -->
+<div class="manga_search_item">
+    <h3><a href="/Manga/One_Piece">One Piece</a></h3>
+    <div>1153 Chapters Published. (Ongoing)</div>
+    <strong>Manga (Read Right to Left)</strong>
+    <div>Action, Adventure, Comedy, Drama, Fantasy</div>
+Extracted Data:
+
+Manga title and URL slug
+Chapter count and status
+Reading direction and type
+Genre classifications
+Cover images
+C. Chapter Scraping System
+Bulk Scraping: Scrape all available chapters at once
+Selective Scraping: Choose specific chapters to scrape
+Progress Tracking: Real-time scraping progress and status updates
+Error Handling: Failed chapter tracking and retry mechanisms
+Scraping Process:
+
+API Connection Test: Verify connectivity and available chapters
+Chapter Discovery: List all available chapters for selection
+Batch Processing: Scrape selected chapters with progress tracking
+Data Validation: Verify scraped content and page counts
+Storage: Save chapter data and metadata to local storage
+6. Data Management & Export
+Chapter Data Structure
+
+interface ScrapedChapter {
+  title: string;           // Chapter title
+  ch
+Export Functionality
+JSON Export: Export complete manga data for app integration
+Formatted Output: Ready-to-use data structure for the reading app
+Metadata Inclusion: Complete manga information with chapter data
+Export Format:
+
+
+{
+  "mangaInfo": {
+    "title": "Manga Title",
+    "author": "Author Name",
+    "synopsis": "Full description...",
+    "coverImage": "image_url",
+    "totalChapters": 120,
+    "rating": 4.8
+  },
+  "chapters": [
+    {
+      "id": 1,
+      "title": "Chapter 1",
+      "chapterNumber": 1,
+      "pages": ["url1", "url2", "..."],
+      "views": 1000,
+      "isNew": false
+    }
+  ]
+}
+🔄 Complete User Workflows
+Workflow 1: Setting Up a New Manga
+
+1. Admin Dashboard → Search Tab
+2. Search for manga in AniList database
+3. Select and import manga metadata
+4. Navigate to API Settings
+5. Configure API endpoint and authentication
+6. Test API connection
+7. Navigate to Manage Tab
+8. Select imported manga
+9. Configure API manga name
+10. Search for available manga on scraping source
+11. Select correct manga from results
+12. Test connection and view available chapters
+13. Select chapters to scrape (all or specific)
+14. Execute scraping process
+15. Monitor progress and handle any errors
+16. Export data for app integration
+17. Manga is now available in the reading app
+Workflow 2: Reader Experience
+
+1. User visits the manga reading platform
+2. Views hero section with manga information
+3. Browses chapters in grid or list view
+4. Uses search/filter to find specific chapters
+5. Clicks on a chapter to start reading
+6. Chooses reading mode (single page or continuous)
+7. Navigates through pages using keyboard or touch
+8. Uses fullscreen mode for immersive reading
+9. Navigates between chapters seamlessly
+10. Shares chapters or adds to favorites
+Workflow 3: Content Management
+
+1. Admin monitors manga statistics
+2. Checks for new chapters on source sites
+3. Updates API configuration if needed
+4. Scrapes new chapters as they become available
+5. Exports updated data
+6. Content automatically appears in reader app
+7. Users receive new chapter notifications
+🛠 Technical Architecture
+Frontend Stack
+React 18: Modern component-based architecture
+TypeScript: Type-safe development
+Tailwind CSS: Utility-first styling with dark mode
+Vite: Fast development and building
+PWA: Service worker for offline functionality
+State Management
+React Hooks: useState, useEffect for local state
+Context API: Theme management and global state
+Local Storage: Persistent data storage for admin features
+API Integration
+AniList GraphQL API: Manga metadata and search
+Custom Scraping API: Chapter content and images
+Fetch API: HTTP requests with error handling
+CORS Handling: Proxy fallback for browser restrictions
+Data Flow
+
+AniList API → Import Manga → Configure Scraping → 
+Scraping API → Parse Content → Store Data → 
+Export JSON → Reading App → User Experience
+🎨 Design Features
+Visual Design
+Modern UI: Clean, professional interface design
+Dark/Light Themes: User preference with system detection
+Responsive Layout: Mobile-first design approach
+Micro-interactions: Hover effects and smooth transitions
+Loading States: Progress indicators and skeleton screens
+User Experience
+Intuitive Navigation: Clear information hierarchy
+Fast Performance: Optimized images and lazy loading
+Accessibility: Keyboard navigation and screen reader support
+Error Handling: Graceful error messages and recovery options
+📊 Current Status & Capabilities
+Completed Features
+✅ Complete manga reading interface
+
+✅ AniList integration for manga discovery
+
+✅ API configuration and testing system
+
+✅ HTML parsing for search results
+
+✅ Chapter scraping with progress tracking
+
+✅ Data export functionality
+
+✅ PWA implementation
+
+✅ Dark/light theme support
+
+✅ Responsive design
+
+✅ SEO optimization
+
+Data Sources Supported
+AniList: Manga metadata and information
+Custom APIs: Chapter content scraping
+HTML Parsing: Flexible content extraction
+Image Hosting: Direct image URL support
+Export Formats
+JSON: Complete manga and chapter data
+Structured Data: Ready for app integration
+Metadata: SEO and social media optimization
+This comprehensive system provides a complete solution for manga content management and reading, from discovery and import to scraping and user consumption.
