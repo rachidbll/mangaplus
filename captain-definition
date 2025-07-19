@@ -5,8 +5,8 @@
     "WORKDIR /usr/src/app",
     "COPY . .",
     "RUN npm install",
-    "RUN npx prisma generate",
-    "RUN npx prisma migrate deploy",
+    "RUN DATABASE_URL=$DATABASE_URL npx prisma generate",
+    "RUN DATABASE_URL=$DATABASE_URL npx prisma migrate deploy",
     "RUN npm run build",
     "RUN ls -la /usr/src/app/dist",
     "CMD [\"node\", \"server.js\"]"
