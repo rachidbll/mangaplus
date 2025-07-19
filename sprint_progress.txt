@@ -4,3 +4,10 @@ Sprint 1 Progress:
 - **Initial Content:** Populated the application with random text and icons on first load to provide a functional baseline and fixed the existing bug where the app crashes if no data is returned from the API.
 - **Admin/User View Separation:** Refactored the main application component to cleanly separate the user-facing manga reader from the admin dashboard.
 - **Site Update Notification:** Implemented a notification system to inform the administrator that they need to update the site information.
+
+Sprint 2 Progress:
+
+- **Dedicated Admin Section:** Enhanced the admin dashboard structure and moved website settings from localStorage to the database.
+- **Essential Settings UI:** Implemented API endpoints for fetching and updating website settings, and refactored the Settings UI to use these endpoints.
+- **Dynamic Content Integration:** Connected the settings UI to the frontend, ensuring real-time updates to user-facing pages.
+- **Bug Fixes:** Addressed the NGINX 502 error by ensuring Prisma client generation during deployment and resolved the `mangaInfo` ReferenceError in the Navigation component.
