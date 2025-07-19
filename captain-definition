@@ -7,6 +7,7 @@
     "RUN npm install",
     "RUN npx prisma generate",
     "RUN npm run build",
+    "RUN ls -la /usr/src/app/dist",
     "CMD [\"node\", \"server.js\"]"
   ]
 }
