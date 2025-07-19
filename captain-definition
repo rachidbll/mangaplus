@@ -8,32 +8,5 @@
     "COPY . .",
     "RUN npm run build",
     "CMD [\"node\", \"server.js\"]"
-  ],
-  "services": [
-    {
-      "name": "app",
-      "image": "node:18-alpine",
-      "ports": [
-        "4173:4173"
-      ],
-      "volumes": [
-        {
-          "hostPath": "./",
-          "containerPath": "/usr/src/app"
-        }
-      ],
-      "workingDir": "/usr/src/app",
-      "command": [
-        "npm",
-        "install",
-        "&&",
-        "npm",
-        "run",
-        "dev"
-      ],
-      "environment": {
-        "DATABASE_URL": "mysql://caprover:${captain.DATABASE_PASSWORD}@srv-captain--db-mysql:3306/${captain.MYSQL_DATABASE}"
-      }
-    }
   ]
 }
