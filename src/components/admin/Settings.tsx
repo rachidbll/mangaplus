@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export const Settings: React.FC = () => {
-  const [settings, setSettings] = useState<Record<string, string>>({});
+  const [settings, setSettings] = useState<Record<string, string>>({
+    siteTitle: 'Akira Chronicles',
+    siteDescription: 'Read Akira Chronicles manga online with the best reading experience. Follow the epic story of Kaneda and Tetsuo in Neo-Tokyo.',
+    siteLogo: '',
+    defaultBannerImage: '',
+    defaultHeroImage: '',
+    defaultChapterImage: '',
+  });
 
   useEffect(() => {
     const fetchSettings = async () => {

@@ -42,7 +42,7 @@ export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate 
                 ) : (
                   <BookOpen className="h-8 w-8" />
                 )}
-                <span className="text-xl font-bold">Akira Chronicles</span>
+                <span className="text-xl font-bold">{mangaInfo?.title || 'Akira Chronicles'}</span>
               </button>
             </div>
 
