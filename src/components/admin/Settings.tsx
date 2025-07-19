@@ -1,21 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 export const Settings: React.FC = () => {
-  const [siteTitle, setSiteTitle] = useState(() => localStorage.getItem('siteTitle') || 'Akira Chronicles');
-  const [siteDescription, setSiteDescription] = useState(() => localStorage.getItem('siteDescription') || 'Read Akira Chronicles manga online with the best reading experience. Follow the epic story of Kaneda and Tetsuo in Neo-Tokyo.');
-  const [siteLogo, setSiteLogo] = useState(() => localStorage.getItem('siteLogo') || '');
-  const [defaultBannerImage, setDefaultBannerImage] = useState(() => localStorage.getItem('defaultBannerImage') || 'https://picsum.photos/1200/400');
-  const [defaultHeroImage, setDefaultHeroImage] = useState(() => localStorage.getItem('defaultHeroImage') || 'https://picsum.photos/400/600');
-  const [defaultChapterImage, setDefaultChapterImage] = useState(() => localStorage.getItem('defaultChapterImage') || 'https://picsum.photos/800/1200');
+  const [settings, setSettings] = useState<Record<string, string>>({});
 
-  const handleSave = () => {
-    localStorage.setItem('siteTitle', siteTitle);
-    localStorage.setItem('siteDescription', siteDescription);
-    localStorage.setItem('siteLogo', siteLogo);
-    localStorage.setItem('defaultBannerImage', defaultBannerImage);
-    localStorage.setItem('defaultHeroImage', defaultHeroImage);
-    localStorage.setItem('defaultChapterImage', defaultChapterImage);
+  useEffect(() => {
+    const fetchSettings = async () => {
+      const response = await axios.get('/api/settings');
+      setSettings(response.data);
+    };
+    fetchSettings();
+  }, []);
+
+  const handleSave = async () => {
+    const settingsArray = Object.entries(settings).map(([key, value]) => ({ key, value }));
+    await axios.post('/api/settings', { settings: settingsArray });
     alert('Settings saved successfully!');
+  };
+
+  const handleChange = (key: string, value: string) => {
+    setSettings(prev => ({ ...prev, [key]: value }));
   };
 
   return (
@@ -27,8 +31,8 @@ export const Settings: React.FC = () => {
           <input
             type="text"
             id="siteTitle"
-            value={siteTitle}
-            onChange={(e) => setSiteTitle(e.target.value)}
+            value={settings.siteTitle || ''}
+            onChange={(e) => handleChange('siteTitle', e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
           />
         </div>
@@ -36,8 +40,8 @@ export const Settings: React.FC = () => {
           <label htmlFor="siteDescription" className="block text-sm font-medium text-slate-700 dark:text-slate-300">Site Description</label>
           <textarea
             id="siteDescription"
-            value={siteDescription}
-            onChange={(e) => setSiteDescription(e.target.value)}
+            value={settings.siteDescription || ''}
+            onChange={(e) => handleChange('siteDescription', e.target.value)}
             rows={4}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
           />
@@ -47,8 +51,8 @@ export const Settings: React.FC = () => {
           <input
             type="text"
             id="siteLogo"
-            value={siteLogo}
-            onChange={(e) => setSiteLogo(e.target.value)}
+            value={settings.siteLogo || ''}
+            onChange={(e) => handleChange('siteLogo', e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
           />
         </div>
@@ -57,8 +61,8 @@ export const Settings: React.FC = () => {
           <input
             type="text"
             id="defaultBannerImage"
-            value={defaultBannerImage}
-            onChange={(e) => setDefaultBannerImage(e.target.value)}
+            value={settings.defaultBannerImage || ''}
+            onChange={(e) => handleChange('defaultBannerImage', e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
           />
         </div>
@@ -67,8 +71,8 @@ export const Settings: React.FC = () => {
           <input
             type="text"
             id="defaultHeroImage"
-            value={defaultHeroImage}
-            onChange={(e) => setDefaultHeroImage(e.target.value)}
+            value={settings.defaultHeroImage || ''}
+            onChange={(e) => handleChange('defaultHeroImage', e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
           />
         </div>
@@ -77,8 +81,8 @@ export const Settings: React.FC = () => {
           <input
             type="text"
             id="defaultChapterImage"
-            value={defaultChapterImage}
-            onChange={(e) => setDefaultChapterImage(e.target.value)}
+            value={settings.defaultChapterImage || ''}
+            onChange={(e) => handleChange('defaultChapterImage', e.target.value)}
             className="mt-1 block w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
           />
         </div>

@@ -96,6 +96,39 @@ app.delete('/api/manga/:mangaId', async (req, res) => {
   }
 });
 
+// Settings API
+app.get('/api/settings', async (req, res) => {
+  try {
+    const settings = await prisma.setting.findMany();
+    const settingsMap = settings.reduce((acc, setting) => {
+      acc[setting.key] = setting.value;
+      return acc;
+    }, {});
+    res.status(200).json(settingsMap);
+  } catch (error) {
+    console.error('Error fetching settings:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+app.post('/api/settings', async (req, res) => {
+  const { settings } = req.body;
+  try {
+    for (const { key, value } of settings) {
+      await prisma.setting.upsert({
+        where: { key },
+        update: { value },
+        create: { key, value },
+      });
+    }
+    res.status(200).json({ message: 'Settings updated successfully' });
+  } catch (error) {
+    console.error('Error updating settings:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
+
 // Serve static files from the 'dist' directory (Vite build output)
 app.use(express.static(path.join(__dirname, 'dist')));
 

@@ -1,0 +1,6 @@
+Sprint 1 Progress:
+
+- **Asset Replacement:** Replaced local asset paths with placeholders from a CDN to ensure the application is visually complete without relying on local files.
+- **Initial Content:** Populated the application with random text and icons on first load to provide a functional baseline and fixed the existing bug where the app crashes if no data is returned from the API.
+- **Admin/User View Separation:** Refactored the main application component to cleanly separate the user-facing manga reader from the admin dashboard.
+- **Site Update Notification:** Implemented a notification system to inform the administrator that they need to update the site information.

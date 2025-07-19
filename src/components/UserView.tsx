@@ -26,6 +26,33 @@ export const UserView: React.FC<UserViewProps> = ({ currentState, setCurrentStat
   const [defaultChapterImage, setDefaultChapterImage] = useState('https://picsum.photos/800/1200');
 
   useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const response = await axios.get('/api/settings');
+        const settings = response.data;
+        if (settings.siteTitle) {
+          document.title = settings.siteTitle;
+        }
+        if (settings.siteDescription) {
+          const metaDescription = document.querySelector('meta[name="description"]');
+          if (metaDescription) {
+            metaDescription.setAttribute('content', settings.siteDescription);
+          }
+        }
+        if (settings.defaultBannerImage) {
+          setDefaultBannerImage(settings.defaultBannerImage);
+        }
+        if (settings.defaultHeroImage) {
+          setDefaultHeroImage(settings.defaultHeroImage);
+        }
+        if (settings.defaultChapterImage) {
+          setDefaultChapterImage(settings.defaultChapterImage);
+        }
+      } catch (error) {
+        console.error("Error fetching settings", error);
+      }
+    };
+
     const fetchData = async () => {
       try {
         const response = await axios.get('/api/manga/all');
@@ -113,31 +140,7 @@ export const UserView: React.FC<UserViewProps> = ({ currentState, setCurrentStat
       }
     };
     fetchData();
-
-    const siteTitle = localStorage.getItem('siteTitle');
-    const siteDescription = localStorage.getItem('siteDescription');
-    const storedDefaultBannerImage = localStorage.getItem('defaultBannerImage');
-    const storedDefaultHeroImage = localStorage.getItem('defaultHeroImage');
-    const storedDefaultChapterImage = localStorage.getItem('defaultChapterImage');
-
-    if (siteTitle) {
-      document.title = siteTitle;
-    }
-    if (siteDescription) {
-      const metaDescription = document.querySelector('meta[name="description"]');
-      if (metaDescription) {
-        metaDescription.setAttribute('content', siteDescription);
-      }
-    }
-    if (storedDefaultBannerImage) {
-      setDefaultBannerImage(storedDefaultBannerImage);
-    }
-    if (storedDefaultHeroImage) {
-      setDefaultHeroImage(storedDefaultHeroImage);
-    }
-    if (storedDefaultChapterImage) {
-      setDefaultChapterImage(storedDefaultChapterImage);
-    }
+    fetchSettings();
   }, []);
 
   const handleChapterClick = (chapterId: number) => {
