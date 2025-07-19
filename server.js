@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const prisma = new PrismaClient();
-const PORT = process.env.PORT || 80; // Default to 80 if CapRover doesn't inject PORT
+const PORT = process.env.PORT || 4173;
 
 // Global error handling for uncaught exceptions and unhandled promise rejections
 process.on('uncaughtException', (err) => {
