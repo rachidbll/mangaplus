@@ -167,10 +167,13 @@ app.post('/api/settings', async (req, res) => {
 
 // Serve static files from the 'dist' directory (Vite build output)
 app.use(express.static(path.join(__dirname, 'dist')));
+console.log(`Serving static files from: ${path.join(__dirname, 'dist')}`);
 
 // All other GET requests should return the index.html (for client-side routing)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+  const indexPath = path.join(__dirname, 'dist', 'index.html');
+  console.log(`Attempting to serve index.html from: ${indexPath}`);
+  res.sendFile(indexPath);
 });
 
 app.listen(PORT, () => {
