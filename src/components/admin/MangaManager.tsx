@@ -29,7 +29,7 @@ export const MangaManager: React.FC = () => {
   };
 
   const deleteManga = async (mangaId: string) => {
-    if (confirm('Are you sure you want to delete this manga? This action cannot be undone.')) {
+    if (window.confirm('Are you sure you want to delete this manga? This action cannot be undone.')) {
       await axios.delete(`/api/manga/${mangaId}`);
       loadMangaList();
       if (selectedManga?.id === mangaId) {

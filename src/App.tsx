@@ -10,7 +10,6 @@ import { AdminDashboard } from './components/admin/AdminDashboard';
 import { Footer } from './components/Footer';
 import { SEO } from './components/SEO';
 import axios from 'axios';
-import axios from 'axios';
 import { MangaInfo, Chapter, MangaStats } from './types/manga';
 
 type AppState = 'home' | 'chapters' | 'reader' | 'characters' | 'favorites' | 'admin';

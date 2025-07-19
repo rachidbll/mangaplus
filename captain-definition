@@ -7,7 +7,7 @@
     "RUN npm install",
     "COPY . .",
     "RUN npm run build",
-    "CMD [\"npm\", \"run\", \"preview\"]"
+    "CMD [\"node\", \"server.js\"]"
   ],
   "services": [
     {

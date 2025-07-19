@@ -57,7 +57,7 @@ export const ApiSettings: React.FC = () => {
     try {
       const result = await scrapingService.testApiConnection('test manga');
       setTestResult(result);
-    } catch {
+    } catch (e) {
       setTestResult({
         success: false,
         chaptersFound: 0,
