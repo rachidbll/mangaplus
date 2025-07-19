@@ -25,14 +25,25 @@ process.on('unhandledRejection', (reason, promise) => {
 
 // Test database connection on startup
 async function connectToDatabase() {
-  try {
-    await prisma.$connect();
-    console.log('Database connected successfully!');
-  } catch (error) {
-    console.error('Failed to connect to database:', error);
-    console.error('DATABASE_URL:', process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/^(.*?:\/\/.*?):.*?@/, '$1:*****@') : 'Not set');
-    process.exit(1); // Exit if database connection fails
+  const MAX_RETRIES = 5;
+  let retries = 0;
+  while (retries < MAX_RETRIES) {
+    try {
+      await prisma.$connect();
+      console.log('Database connected successfully!');
+      return;
+    } catch (error) {
+      retries++;
+      console.error(`Failed to connect to database (attempt ${retries}/${MAX_RETRIES}):`, error);
+      console.error('DATABASE_URL:', process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/^(.*?:\/\/.*?):.*?@/, '$1:*****@') : 'Not set');
+      if (retries < MAX_RETRIES) {
+        console.log('Retrying in 5 seconds...');
+        await new Promise(resolve => setTimeout(resolve, 5000));
+      }
+    }
   }
+  console.error('Failed to connect to database after multiple retries. Exiting.');
+  process.exit(1); // Exit if database connection fails after all retries
 }
 connectToDatabase();
 
