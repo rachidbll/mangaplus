@@ -9,6 +9,14 @@ type AdminTab = 'search' | 'api-settings' | 'manage' | 'settings';
 
 export const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState<AdminTab>('search');
+  const [showSettingsNotification, setShowSettingsNotification] = useState(false);
+
+  useEffect(() => {
+    const siteTitle = localStorage.getItem('siteTitle');
+    if (!siteTitle || siteTitle === 'Akira Chronicles') {
+      setShowSettingsNotification(true);
+    }
+  }, []);
 
   const tabs = [
     { id: 'search' as AdminTab, label: 'Search Manga', icon: Search },

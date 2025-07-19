@@ -9,7 +9,32 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const prisma = new PrismaClient();
-const PORT = process.env.PORT || 4173;
+const PORT = process.env.PORT; // CapRover injects PORT environment variable
+
+// Global error handling for uncaught exceptions and unhandled promise rejections
+process.on('uncaughtException', (err) => {
+  console.error('UNCAUGHT EXCEPTION:', err);
+  process.exit(1); // Mandatory exit after uncaught exception
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('UNHANDLED REJECTION:', reason, promise);
+  // Optionally, you might want to exit here for unhandled rejections in production
+  // process.exit(1);
+});
+
+// Test database connection on startup
+async function connectToDatabase() {
+  try {
+    await prisma.$connect();
+    console.log('Database connected successfully!');
+  } catch (error) {
+    console.error('Failed to connect to database:', error);
+    console.error('DATABASE_URL:', process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/^(.*?:\/\/.*?):.*?@/, '$1:*****@') : 'Not set');
+    process.exit(1); // Exit if database connection fails
+  }
+}
+connectToDatabase();
 
 app.use(cors());
 app.use(express.json());
