@@ -5,9 +5,10 @@ import { useTheme } from '../hooks/useTheme';
 interface NavigationProps {
   currentPage: string;
   onNavigate: (page: string) => void;
+  mangaInfo: MangaInfo | null;
 }
 
-export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate }) => {
+export const Navigation: React.FC<NavigationProps> = ({ currentPage, onNavigate, mangaInfo }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { theme, toggleTheme } = useTheme();
   const [siteLogo, setSiteLogo] = useState('');

@@ -3,11 +3,13 @@ import { ThemeProvider } from './contexts/ThemeContext';
 import { Navigation } from './components/Navigation';
 import { AdminDashboard } from './components/admin/AdminDashboard';
 import { UserView } from './components/UserView';
+import { MangaInfo } from './types/manga';
 
 type AppState = 'home' | 'chapters' | 'reader' | 'characters' | 'favorites' | 'admin';
 
 function App() {
   const [currentView, setCurrentView] = useState<AppState>('home');
+  const [mangaInfo, setMangaInfo] = useState<MangaInfo | null>(null);
 
   useEffect(() => {
     if ('serviceWorker' in navigator) {
@@ -33,6 +35,7 @@ function App() {
         <Navigation
           currentPage={currentView}
           onNavigate={handleNavigate}
+          mangaInfo={mangaInfo}
         />
         
         {isAdmin ? (
@@ -41,6 +44,7 @@ function App() {
           <UserView 
             currentState={currentView}
             setCurrentState={handleNavigate}
+            setMangaInfo={setMangaInfo}
           />
         )}
       </div>

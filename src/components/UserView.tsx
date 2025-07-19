@@ -87,7 +87,7 @@ export const UserView: React.FC<UserViewProps> = ({ currentState, setCurrentStat
             rating: 4.8,
             lastUpdated: "2024-01-15",
             characters: [],
-          });
+        });
           setChapters(Array.from({ length: 10 }, (_, i) => ({
             id: i + 1,
             title: `Chapter ${i + 1}`,
