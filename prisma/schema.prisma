@@ -3,15 +3,15 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Manga {
   id            String    @id @default(cuid())
   anilistId     Int?      @unique
   title         String
-  description   String
+  description   String    @db.Text
   coverImage    String
   bannerImage   String
   genres        String
@@ -44,7 +44,7 @@ model Character {
   id          String  @id @default(cuid())
   name        String
   image       String
-  description String
+  description String  @db.Text
   mangaId     String
   manga       Manga   @relation(fields: [mangaId], references: [id])
 
@@ -54,7 +54,7 @@ model Character {
 model Setting {
   id        String   @id @default(cuid())
   key       String   @unique
-  value     String
+  value     String   @db.Text
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
